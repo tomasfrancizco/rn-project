@@ -9,26 +9,30 @@
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import PlaceInput from "./src/components/PlaceInput/PlaceInput";
-import ListContainer from "./src/components/ListContainer/ListContainer";
+import PlaceList from "./src/components/PlaceList/PlaceList";
 
 export default class App extends Component {
   state = {
-    placeName: "",
     places: []
   };
 
-  placeNameChangedHandler = val => {
-    this.setState({ placeName: val });
-  };
-
-  placeSubmitHandler = () => {
-    if (this.state.placeName.trim() === "") {
-      return;
-    }
-
+  placeAddedHandler = placeName => {
     this.setState(prevState => {
       return {
-        places: prevState.places.concat(prevState.placeName)
+        places: prevState.places.concat({
+          key: Math.random(),
+          value: placeName
+        })
+      };
+    });
+  };
+
+  placeDeletedHandler = key => {
+    this.setState(prevState => {
+      return {
+        places: prevState.places.filter(place => {
+          return place.key !== key;
+        })
       };
     });
   };
@@ -36,12 +40,11 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <PlaceInput
-          placeName={this.state.placeName}
-          placeNameChangedHandler={this.placeNameChangedHandler}
-          placeSubmitHandler={this.placeSubmitHandler}
+        <PlaceInput onPlaceAdded={this.placeAddedHandler} />
+        <PlaceList
+          places={this.state.places}
+          onItemDeleted={this.placeDeletedHandler}
         />
-        <ListContainer places={this.state.places} />
       </View>
     );
   }
@@ -50,9 +53,9 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start",
-    paddingTop: 80,
+    padding: 26,
+    backgroundColor: "#fff",
     alignItems: "center",
-    backgroundColor: "#F5FCFF"
+    justifyContent: "flex-start"
   }
 });
