@@ -1,8 +1,9 @@
 import React from "react";
 import { Modal, View, Image, Text, Button, StyleSheet } from "react-native";
 
-const PlaceDetail = props => {
+const placeDetail = props => {
   let modalContent = null;
+
   if (props.selectedPlace) {
     modalContent = (
       <View>
@@ -30,7 +31,7 @@ const PlaceDetail = props => {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    margin: 40
+    margin: 22
   },
   placeImage: {
     width: "100%",
@@ -43,4 +44,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default PlaceDetail;
+export default placeDetail;
